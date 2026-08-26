@@ -1,74 +1,58 @@
 import Link from "next/link";
-import { getPurchaseOrders, poTotals } from "@/lib/store";
+import { getBooks } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
-const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
-
 export default function Home() {
-  const orders = getPurchaseOrders();
+  const books = getBooks();
+  const readCount = books.filter((b) => b.status === "Read").length;
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-10">
-      <header className="mb-8">
+    <main className="mx-auto w-full max-w-4xl px-6 py-12">
+      <header className="mb-10">
         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
-          Purchase Orders
+          Reading List
         </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {orders.length} open orders across {new Set(orders.map((o) => o.vendor)).size} vendors
+          {readCount} of {books.length} read
         </p>
       </header>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
-            <tr>
-              <th className="px-4 py-3 font-medium">PO #</th>
-              <th className="px-4 py-3 font-medium">Vendor</th>
-              <th className="px-4 py-3 font-medium">Ship Date</th>
-              <th className="px-4 py-3 font-medium text-right">Line Items</th>
-              <th className="px-4 py-3 font-medium text-right">Total</th>
-              <th className="px-4 py-3 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-100">
-            {orders.map((po) => {
-              const totals = poTotals(po);
-              return (
-                <tr key={po.id} className="hover:bg-neutral-50">
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/po/${po.id}`}
-                      className="font-medium text-neutral-900 underline-offset-2 hover:underline"
-                    >
-                      {po.poNumber}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-neutral-700">{po.vendor}</td>
-                  <td className="px-4 py-3 text-neutral-700">{po.shipDate}</td>
-                  <td className="px-4 py-3 text-right text-neutral-700">
-                    {po.lineItems.length}
-                  </td>
-                  <td className="px-4 py-3 text-right font-medium text-neutral-900">
-                    {currency.format(totals.extCost)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        po.status === "Approved"
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-amber-50 text-amber-700"
-                      }`}
-                    >
-                      {po.status}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {books.map((book) => (
+          <li key={book.id}>
+            <Link
+              href={`/books/${book.id}`}
+              className="group flex h-full flex-col justify-between rounded-lg border border-neutral-200 p-5 transition-colors hover:border-neutral-400"
+            >
+              <div>
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="font-medium text-neutral-900 group-hover:underline underline-offset-2">
+                    {book.title}
+                  </h2>
+                  <span
+                    className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      book.status === "Read"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-neutral-100 text-neutral-600"
+                    }`}
+                  >
+                    {book.status}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-neutral-500">
+                  {book.author} · {book.year}
+                </p>
+                <p className="mt-3 text-sm text-neutral-600 line-clamp-2">{book.blurb}</p>
+              </div>
+              <div className="mt-4 flex items-center justify-between text-xs text-neutral-500">
+                <span>{book.genre}</span>
+                <span>★ {book.rating.toFixed(1)}</span>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
