@@ -89,7 +89,3 @@ production build with no errors.
   visitor sees and can edit the same shared list.
 - **Hand-written data, not a public API.** Keeps the demo self-contained
   with no network dependency or rate limits to worry about during review.
-- **No `force-dynamic`.** `/` is statically prerendered and `/books/[id]`
-  is server-rendered on demand (no `generateStaticParams`); the toggle stays
-  in sync purely through `revalidatePath`, which is what it's for — no need
-  to disable caching wholesale to get fresh data after a mutation.
