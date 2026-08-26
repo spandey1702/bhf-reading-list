@@ -81,6 +81,29 @@ production build with no errors.
 | `app/page.tsx` | List page (server-rendered) |
 | `app/books/[id]/page.tsx` | Detail page (dynamic route) |
 
+## How I directed the build
+
+I used Claude Code as a pair-programming tool and made the calls below
+myself along the way:
+
+- Picked the requirements' "pick your own data" option deliberately —
+  started with a purchase-order dataset to mirror this role's Automation
+  focus, then cut it for a simpler reading-list domain so the demo stays
+  easy to review in a few minutes.
+- Required incremental, reviewable commits per feature/decision instead of
+  one large dump, so the history reads as a sequence of real steps.
+- Rejected an initial `export const dynamic = "force-dynamic"` on every
+  page — asked whether it would count against the submission, confirmed
+  `revalidatePath` alone keeps both routes fresh even under static
+  prerendering, and had it removed in favor of the more idiomatic approach.
+- Scoped the UI bonus to one deliberate idea (the genre-colored spine
+  accent) rather than a pile of unrelated tweaks.
+- Kept agent-generated files (`AGENTS.md`, `CLAUDE.md`) out of the tracked
+  repo — they're local tooling artifacts, not part of the app.
+- Verified the final state from a clean, anonymous clone of the pushed
+  repo — `npm ci`, production build, and a full click-through in a real
+  browser — rather than trusting the local working copy.
+
 ## Assumptions
 
 - **No persistence.** Status changes live in memory and reset on server
