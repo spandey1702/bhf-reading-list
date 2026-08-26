@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getBooks } from "@/lib/store";
+import { genreSpine } from "@/lib/genre-colors";
 
 export default function Home() {
   const books = getBooks();
@@ -21,7 +22,9 @@ export default function Home() {
           <li key={book.id}>
             <Link
               href={`/books/${book.id}`}
-              className="group flex h-full flex-col justify-between rounded-lg border border-neutral-200 p-5 transition-colors hover:border-neutral-400"
+              className={`group flex h-full flex-col justify-between rounded-lg border border-neutral-200 border-l-4 p-5 transition-colors hover:border-neutral-400 ${genreSpine(
+                book.genre
+              )}`}
             >
               <div>
                 <div className="flex items-start justify-between gap-3">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBook } from "@/lib/store";
 import { toggleRead } from "@/app/actions";
+import { genreSpine } from "@/lib/genre-colors";
 
 export default async function BookDetail({
   params,
@@ -21,7 +22,11 @@ export default async function BookDetail({
         ← Back to reading list
       </Link>
 
-      <div className="mt-6 rounded-lg border border-neutral-200 p-6">
+      <div
+        className={`mt-6 rounded-lg border border-neutral-200 border-l-4 p-6 ${genreSpine(
+          book.genre
+        )}`}
+      >
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
