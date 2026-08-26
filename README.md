@@ -81,21 +81,6 @@ production build with no errors.
 | `app/page.tsx` | List page (server-rendered) |
 | `app/books/[id]/page.tsx` | Detail page (dynamic route) |
 
-## What I updated along the way
-
-- Downgraded `next` / `eslint-config-next` from the scaffolder's default
-  (v16) to `15.5.24` to match the stated v15 requirement.
-- Fixed `eslint.config.mjs`: the pinned `eslint-config-next` version ships
-  legacy (`.eslintrc`-style) exports, not flat-config exports, so
-  `next build`'s lint step failed until the config was rewritten to bridge
-  through `FlatCompat` (`@eslint/eslintrc`), the standard pattern Next.js
-  itself recommends for this case.
-- Removed the unused default `create-next-app` SVG placeholder icons
-  (`public/*.svg`) — nothing in the app references them.
-- Started with a purchase-order tracker as the dataset, then rebuilt around
-  a simpler reading-list dataset instead — same architecture (server list
-  page, server action, dynamic detail route), simpler domain.
-
 ## Assumptions
 
 - **No persistence.** Status changes live in memory and reset on server
