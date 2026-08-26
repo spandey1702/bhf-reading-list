@@ -13,6 +13,32 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000). `npm run build` runs a
 production build with no errors.
 
+## Flow
+
+1. **Request `/`.** `app/page.tsx` runs on the server, calls
+   `getBooks()` (`lib/store.ts`), and renders the full card grid as HTML.
+   No client fetch, no loading state — the browser receives the finished
+   page. This route is statically prerendered and only re-rendered when
+   something explicitly invalidates it (step 4).
+2. **Click a book.** Navigates to `/books/[id]`. The server reads the `id`
+   param, calls `getBook(id)`, and renders that one book's detail — or
+   calls `notFound()` if the id doesn't match anything, producing a real
+   404.
+3. **Click "Mark as Read" / "Mark as Want to Read."** The button is inside
+   a `<form action={toggleRead.bind(null, book.id)}>`. Submitting it invokes
+   the `toggleRead` server action (`app/actions.ts`) directly on the
+   server — no client-side fetch or API route involved.
+4. **The action mutates and revalidates.** `toggleRead` calls
+   `toggleReadStatus(id)` in the store, which flips the book's status in
+   the in-memory array, then calls `revalidatePath("/")` and
+   `revalidatePath("/books/[id]")`. That purges the cached render for both
+   routes.
+5. **Everything reflects the change immediately.** The next request to
+   either route (including the one Next.js triggers automatically to
+   refresh the page you're on) re-runs step 1 or 2 with the updated store,
+   so the badge and read count are correct with no manual reload and no
+   client state to keep in sync by hand.
+
 ## How this fulfills each requirement
 
 1. **Project setup — Next.js (App Router, v15), TypeScript, Tailwind, runs
