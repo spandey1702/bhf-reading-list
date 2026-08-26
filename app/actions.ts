@@ -1,12 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { toggleStatus } from "@/lib/store";
+import { toggleReadStatus } from "@/lib/store";
 
-export async function toggleApproval(id: string) {
-  const newStatus = toggleStatus(id);
+export async function toggleRead(id: string) {
+  const newStatus = toggleReadStatus(id);
   if (!newStatus) return;
 
   revalidatePath("/");
-  revalidatePath(`/po/${id}`);
+  revalidatePath(`/books/${id}`);
 }
