@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { getBooks } from "@/lib/store";
 
-export const dynamic = "force-dynamic";
-
 export default function Home() {
   const books = getBooks();
   const readCount = books.filter((b) => b.status === "Read").length;

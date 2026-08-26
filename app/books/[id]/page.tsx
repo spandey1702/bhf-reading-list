@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import { getBook } from "@/lib/store";
 import { toggleRead } from "@/app/actions";
 
-export const dynamic = "force-dynamic";
-
 export default async function BookDetail({
   params,
 }: {
