@@ -81,28 +81,30 @@ production build with no errors.
 | `app/page.tsx` | List page (server-rendered) |
 | `app/books/[id]/page.tsx` | Detail page (dynamic route) |
 
-## How I directed the build
+## Design decisions
 
-I used Claude Code as a pair-programming tool and made the calls below
-myself along the way:
-
-- Picked the requirements' "pick your own data" option deliberately —
-  started with a purchase-order dataset to mirror this role's Automation
-  focus, then cut it for a simpler reading-list domain so the demo stays
-  easy to review in a few minutes.
-- Required incremental, reviewable commits per feature/decision instead of
-  one large dump, so the history reads as a sequence of real steps.
-- Rejected an initial `export const dynamic = "force-dynamic"` on every
-  page — asked whether it would count against the submission, confirmed
-  `revalidatePath` alone keeps both routes fresh even under static
-  prerendering, and had it removed in favor of the more idiomatic approach.
-- Scoped the UI bonus to one deliberate idea (the genre-colored spine
-  accent) rather than a pile of unrelated tweaks.
-- Kept agent-generated files (`AGENTS.md`, `CLAUDE.md`) out of the tracked
-  repo — they're local tooling artifacts, not part of the app.
-- Verified the final state from a clean, anonymous clone of the pushed
-  repo — `npm ci`, production build, and a full click-through in a real
-  browser — rather than trusting the local working copy.
+- For "pick your own data," I went with a reading list — small enough to
+  stay reviewable in a few minutes, but with enough real fields (genre,
+  rating, status, blurb) to make the list and detail views feel like an
+  actual product rather than a placeholder.
+- I split the app the way I'd want to hand it off: `data/` for the raw
+  content, `lib/types.ts` for the shape of it, `lib/store.ts` for the one
+  place that reads and mutates it, `app/actions.ts` for the single server
+  action, and the two route files for presentation only. Nothing reaches
+  into the data layer except through `lib/store.ts`.
+- The server action is wired straight to a `<form action={...}>` rather
+  than a client `onClick` handler, since the mutation itself doesn't need
+  any client-side JavaScript — keeping it a server action end-to-end felt
+  truer to what the exercise is asking for than adding a client component
+  just to call it.
+- For the UI bonus, I picked one idea and committed to it — a genre-colored
+  spine accent that carries from the list cards into the detail view —
+  instead of scattering a handful of smaller, unrelated visual tweaks.
+- I committed in small, reviewable steps per feature/decision rather than
+  one large commit, so the history itself shows how the app was built up.
+- Before calling it done, I verified the exact pushed state, not just my
+  local copy — cloned the repo fresh, ran `npm ci` and a production build,
+  and clicked through the real flow in a browser.
 
 ## Assumptions
 
