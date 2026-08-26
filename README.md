@@ -109,8 +109,7 @@ production build with no errors.
 ## Assumptions
 
 - **No persistence.** Status changes live in memory and reset on server
-  restart — no database is in scope for an exercise this size.
-- **Single viewer, no auth.** There's no login or per-user state; every
-  visitor sees and can edit the same shared list.
+  restart, no database is in scope for an exercise this size.
+- **Single viewer, no auth.** There's no login or per-user state as of now
 - **Hand-written data, not a public API.** Keeps the demo self-contained
   with no network dependency or rate limits to worry about during review.
