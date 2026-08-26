@@ -118,22 +118,12 @@ They're committed as-is per the file's own comment: it gets re-added on every
 `next dev` run regardless, so committing it keeps the working tree clean
 instead of leaving a permanent uncommitted diff.
 
-Beyond that, there's no separate project-specific instruction file — I
-directed the assistant conversationally, in two main phases:
-
-- **Project scaffolding.** Had it run `create-next-app` for App Router +
-  TypeScript + Tailwind, pin Next to v15 (the scaffolder defaults to v16),
-  pick the data domain (a reading list) and the file layout (`data/` for raw
-  content, `lib/types.ts` for shape, `lib/store.ts` as the one read/write
-  surface, `app/actions.ts` for the server action), and wire up the server
-  action and dynamic route to satisfy each requirement in the assignment.
-- **Front-end design.** Had it design the list and detail views itself rather
-  than handing it a mockup — card grid layout, the genre-colored spine accent
-  carried from list into detail, status badges, empty/404 states. I reviewed
-  and iterated on the result in a browser rather than accepting the first pass.
-
-I reviewed and tested each feature (server rendering, the server action, the
-dynamic route, the 404 case) as it was built rather than accepting it unread.
+Beyond that, there's no separate project-specific instruction file — I used
+Claude Code for project scaffolding (the `create-next-app` setup, pinning
+Next to v15, the file layout, wiring the server action and dynamic route) and
+for the front-end parts (the list/detail views, the genre-colored spine
+accent, status badges). I reviewed and tested each feature as it was built
+rather than accepting it unread.
 
 ## Assumptions
 
