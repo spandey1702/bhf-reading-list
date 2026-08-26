@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Reading List
 
-## Getting Started
+A small Next.js app that lists books, lets you toggle a book's read status,
+and shows a detail view per book.
 
-First, run the development server:
+## Stack
+
+- Next.js 15 (App Router), TypeScript, Tailwind CSS
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What's here
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`/` — list page.** Server component (`app/page.tsx`) reads all books
+  from `lib/store.ts` and renders them server-side — no client fetch, no
+  loading state.
+- **`/books/[id]` — detail route.** Dynamic route (`app/books/[id]/page.tsx`)
+  looks up one book by its `id` param and renders its full blurb. An unknown
+  id calls `notFound()` and renders the Next.js 404 page.
+- **Server action.** `toggleRead` in `app/actions.ts` flips a book between
+  `Want to Read` and `Read`. It's wired directly to a `<form action={...}>`
+  on the detail page (no client JS needed for the mutation itself), and
+  calls `revalidatePath` on both `/` and the book's detail route so the
+  change shows up everywhere immediately.
 
-## Learn More
+## Data
 
-To learn more about Next.js, take a look at the following resources:
+`data/books.ts` is a small hand-written list of books. `lib/store.ts` holds
+it in memory and exposes read/write helpers — no database, since state only
+needs to survive for the life of the dev server.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Assumptions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- No persistence: the read/unread state resets on server restart, since
+  there's no database in scope for this exercise.
+- No auth/multi-user concerns — this is a single-viewer list.
+- Data set is static and hand-authored rather than pulled from a public API,
+  to keep the demo self-contained and avoid a network dependency.
