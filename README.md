@@ -78,7 +78,7 @@ production build with no errors.
 | `lib/types.ts` | `Book` and `ReadStatus` types |
 | `lib/store.ts` | In-memory store: `getBooks`, `getBook`, `toggleReadStatus` |
 | `app/actions.ts` | The `toggleRead` server action |
-| `app/page.tsx` | List page (server-rendered) |
+| `app/page.tsx` | List page |
 | `app/books/[id]/page.tsx` | Detail page (dynamic route) |
 
 ## Design decisions
