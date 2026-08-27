@@ -102,9 +102,7 @@ production build with no errors.
   instead of scattering a handful of smaller, unrelated visual tweaks.
 - I committed in small, reviewable steps per feature/decision rather than
   one large commit, so the history itself shows how the app was built up.
-- Before calling it done, I verified the exact pushed state, not just my
-  local copy — cloned the repo fresh, ran `npm ci` and a production build,
-  and clicked through the real flow in a browser.
+
 
 ## AI assistant instructions
 
